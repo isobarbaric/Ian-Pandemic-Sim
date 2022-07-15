@@ -16,9 +16,11 @@ body {
 
 canvas { 
     background-color: '#fff5be';
-    
+
     /* so that we can see the canvas's boundaries */
     border: 1px solid black; 
+
+    display: block;
 
     /* horizontal, vertical centering */
     position: absolute;

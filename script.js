@@ -1,5 +1,6 @@
 
 let canvas = document.querySelector('#game')
+let data = document.querySelector('#info')
 
 // resize canvas according to screen size
 canvas.width = 0.8*window.innerWidth;
@@ -151,8 +152,8 @@ let updateCanvas = function() {
   }
 
   if (collisionOccurred) {
-    console.log("Percentage Infected: " + Math.round((current_infected.size)/dots.length * 100) + "%");
-    current_infected_count = current_infected.size;
+    // console.log("Percentage Infected: " + Math.round((current_infected.size)/dots.length * 100) + "%");
+    data.textContent = "Percentage Infected: " + Math.round((current_infected.size)/dots.length * 100) + "%";
   }
 
   dots.forEach((currentPerson) => {

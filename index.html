@@ -6,6 +6,20 @@
   </head>
   <body>
     <canvas id="game"></canvas>
+    <div class="slidecontainer">
+        <label for='child'>Children</label> 
+        <input type="range" min="1" max="100" value="50" class="slider" name='child'>
+        <br>
+        <label for='adult'>Adults</label> 
+        <input type="range" min="1" max="100" value="50" class="slider" name='adult'>
+        <br>
+        <label for='senior'>Seniors</label> 
+        <input type="range" min="1" max="100" value="50" class="slider" name='senior'>    
+        <br>
+    </div>
+    <div id='info'>
+        Percentage Infected: 0%
+    </div>
     <script src="script.js"></script>
   </body>
 </html>
