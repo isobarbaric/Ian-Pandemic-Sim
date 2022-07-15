@@ -122,7 +122,7 @@ let current_infected = new Set();
 dots.push(new Person(id_counter, "child", true));
 current_infected.add(id_counter);
 id_counter++;
-data.textContent = "Percentage Infected: " + Math.round(1/dots.length * 100) + "%";
+data.textContent = "Percentage Infected: " + Math.round(1/dots.length * 100) + "%, Number Infected: 1";
 
 let updateCanvas = function() {
   requestAnimationFrame(updateCanvas);
