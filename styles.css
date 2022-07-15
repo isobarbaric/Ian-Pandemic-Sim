@@ -5,7 +5,18 @@
     padding: 0;
 }
 
+html, body { 
+    width: 100%; 
+    height: 100%; 
+}
+
+body {
+    background-color: '#fff5be';
+}
+
 canvas { 
+    background-color: '#fff5be';
+    
     /* so that we can see the canvas's boundaries */
     border: 1px solid black; 
 

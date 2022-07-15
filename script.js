@@ -5,27 +5,30 @@ let canvas = document.querySelector('#game')
 canvas.width = 0.8*window.innerWidth;
 canvas.height = 0.8*window.innerHeight;
 
+// dynamically size window whenever necessary
+window.addEventListener('resize', function(){
+  canvas.width = 0.8*window.innerWidth;
+  canvas.height = 0.8*window.innerHeight; 
+});
+
 let context = canvas.getContext('2d');  
 
-function generateRandomCoordinate(min, max) {
-  return Math.random() * (max - min) + min;
+let generateRandomInt = function(min, max) {
+  return Math.trunc(Math.random() * (max - min) + min);
 }
 
 // creating a class for the dots  
 class Person {
 
   static borderWidth = 0;
-  static childSpeed = 3; 
-  static adultSpeed = 2;
-  static seniorSpeed = 1;
+  static seniorSpeed = 2;
+  static adultSpeed = Person.seniorSpeed * 1.5;
+  static childSpeed = Person.adultSpeed * 1.5; 
+  static steps = [-1, 1]
 
   constructor(id_number, age_group) {
     this.id_number = id_number;
     this.age_group = age_group;
-
-    // 0, 100 are just temporary dummy values
-    this.x = generateRandomCoordinate(0, canvas.width);
-    this.y = generateRandomCoordinate(0, canvas.height);
 
     // change radius as per dot type
     if (age_group === 'child') {
@@ -43,10 +46,17 @@ class Person {
     }
     this.borderColor = this.backgroundColor;
 
+    // 0, 100 are just temporary dummy values
+    this.x = generateRandomInt(this.radius+1, canvas.width-this.radius-1);
+    this.y = generateRandomInt(this.radius+1, canvas.height-this.radius-1);
+
     // set step size of Person object, different speed according to type of person
-    this.stepX = 1 * this.speed;
-    this.stepY = 1 * this.speed;
-    
+    // this.stepX = this.speed;
+    // this.stepY = this.speed;
+    // console.log(generateRandomInt(0, 2))
+    // console.log(Person.steps[generateRandomInt(0, 2)] * this.speed)
+    this.stepX = Person.steps[generateRandomInt(0, 2)] * this.speed;
+    this.stepY = Person.steps[generateRandomInt(0, 2)] * this.speed;
   }
 
   draw() {
@@ -62,7 +72,6 @@ class Person {
   }
 
   update() {
-    context.clearRect(0, 0, canvas.width, canvas.height);
     this.draw();
 
     // collision detection
@@ -88,15 +97,27 @@ class Person {
 
 id_counter = 1
 
-testPerson = new Person(id_counter, "child")
-testPerson.draw()
+let dots = []
+let ages = ['child', 'adult', 'senior']
+
+for (let i = 0; i < 40; i++) {
+  dots.push(new Person(id_counter, ages[i % 3]));
+  dots[i].draw();
+  id_counter++;
+}
+
+// add infected dot(s)
 
 // add validation for spawn area, to make sure don't spawn out of the screen 
 
-let updateCircle = function() {
-  requestAnimationFrame(updateCircle);
-  testPerson.update();
+let updateCanvas = function() {
+  requestAnimationFrame(updateCanvas);
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  dots.forEach((currentPerson) => {
+    // console.log(currentPerson.id_number);
+    currentPerson.update();
+  });
 }
 
-updateCircle();
+updateCanvas();
 
