@@ -3,3 +3,9 @@
     - other dots
     - walls of canvas
 
+next:
+- set up so that simulation only begins after button is pressed (and then deactivate that button until simulation is over)
+- set up progress bar for infection
+- stop simulation when everyone is dead
+- for the div to the left of the canvas, add a key/instructions section and details about what the three dots + infected dot represent and instructions on how to proceed
+- add selected number next to sliders (rn in textarea) to show how how many have been selected

@@ -1,23 +1,22 @@
 
-let canvas = document.querySelector('#game')
-let data = document.querySelector('.info')
 
-// resize canvas according to screen size
-canvas.width = 0.5*window.innerWidth;
-canvas.height = 0.5*window.innerHeight;
+let canvas, data, content;
 
-// dynamically size window whenever necess  ary
-window.addEventListener('resize', function(){
+function init() {
+  canvas = document.querySelector('#game')
+  data = document.querySelector('.info')
+
+  // resize canvas according to screen size
   canvas.width = 0.5*window.innerWidth;
-  canvas.height = 0.5*window.innerHeight; 
-});
+  canvas.height = 0.5*window.innerHeight;
 
+  // dynamically size window whenever necess  ary
+  window.addEventListener('resize', function(){
+    canvas.width = 0.5*window.innerWidth;
+    canvas.height = 0.5*window.innerHeight; 
+  });
 
-
-let context = canvas.getContext('2d');  
-
-let generateRandomInt = function(min, max) {
-  return Math.trunc(Math.random() * (max - min) + min);
+  context = canvas.getContext('2d');  
 }
 
 // creating a class for the dots  
@@ -56,12 +55,12 @@ class Person {
     this.borderColor = this.backgroundColor;
 
     // add validation for spawn area, to make sure don't spawn out of the screen 
-    this.x = generateRandomInt(this.radius+1, canvas.width-this.radius-1);
-    this.y = generateRandomInt(this.radius+1, canvas.height-this.radius-1);
+    this.x = Person.generateRandomInt(this.radius+1, canvas.width-this.radius-1);
+    this.y = Person.generateRandomInt(this.radius+1, canvas.height-this.radius-1);
 
     // set step size of Person object, different speed according to type of person
-    this.stepX = Person.steps[generateRandomInt(0, 2)] * this.speed;
-    this.stepY = Person.steps[generateRandomInt(0, 2)] * this.speed;
+    this.stepX = Person.steps[Person.generateRandomInt(0, 2)] * this.speed;
+    this.stepY = Person.steps[Person.generateRandomInt(0, 2)] * this.speed;
   }
 
   draw() {
@@ -103,65 +102,90 @@ class Person {
     return distance <= a.radius + b.radius;
   }
   
+  static generateRandomInt(min, max) {
+    return Math.trunc(Math.random() * (max - min) + min);
+  } 
 }
 
-id_counter = 1
+let keepGoing = true;
+let simulation_button = document.querySelector('#start-btn')
+let exit_button = document.querySelector('#stop-btn')
+exit_button.addEventListener('click', function() {
+  simulation_button.disabled = false;
+  keepGoing = false;
+  this.disabled = true;
+});
 
-let dots = []
-let ages = ['child', 'adult', 'senior']
+function simulate() {
+  simulation_button.disabled = true;
+  // setting true for turning on after initial click
+  simulation_button.addEventListener('click', function() {
+    keepGoing = true;
+  });
+  exit_button.disabled = false;
 
-for (let i = 0; i < 10; i++) {
-  dots.push(new Person(id_counter, ages[i % 3], false));
-  dots[i].draw();
+  id_counter = 1
+  let dots = []
+  let ages = ['child', 'adult', 'senior']
+
+  for (let i = 0; i < 10; i++) {
+    dots.push(new Person(id_counter, ages[i % 3], false));
+    dots[i].draw();
+    id_counter++;
+  }
+
+  let current_infected = new Set();
+
+  // adding infected people
+  dots.push(new Person(id_counter, "child", true));
+  current_infected.add(id_counter);
   id_counter++;
-}
+  data.textContent = "Percentage Infected: " + Math.round(1/dots.length * 100) + "%, Number Infected: 1";
 
-let current_infected = new Set();
+  let updateCanvas = function() {
+    requestAnimationFrame(updateCanvas);
 
-// adding infected people
-dots.push(new Person(id_counter, "child", true));
-current_infected.add(id_counter);
-id_counter++;
-data.textContent = "Percentage Infected: " + Math.round(1/dots.length * 100) + "%, Number Infected: 1";
+    // functionality for abort button
+    if (!keepGoing) {      
+      return;
+    }
+      
+    context.clearRect(0, 0, canvas.width, canvas.height);
 
-let updateCanvas = function() {
-  requestAnimationFrame(updateCanvas);
-  context.clearRect(0, 0, canvas.width, canvas.height);
+    let collisionOccurred = false;
 
-  let collisionOccurred = false;
+    // collision detection
+    for (let i = 0; i < dots.length; i++) {
+      for (let j = 0; j < dots.length; j++) {
+        if (i == j) continue;
+        if (Person.intersect(dots[i], dots[j])) {
+          // don't count situation where both are infected
+          if (dots[i].infected && dots[j].infected) {
+            continue
+          }
+          if (dots[i].infected || dots[j].infected) {
+            // differentiate between who is being infected, factor probabilities in
 
-  // collision detection
-  for (let i = 0; i < dots.length; i++) {
-    for (let j = 0; j < dots.length; j++) {
-      if (i == j) continue;
-      if (Person.intersect(dots[i], dots[j])) {
-        // don't count situation where both are infected
-        if (dots[i].infected && dots[j].infected) {
-          continue
-        }
-        if (dots[i].infected || dots[j].infected) {
-          // differentiate between who is being infected, factor probabilities in
-
-          dots[i].backgroundColor = dots[i].borderColor = '#FF6666';
-          dots[j].backgroundColor = dots[j].borderColor = '#FF6666';
-          dots[i].infected = dots[j].infected = true;
-          current_infected.add(dots[i].id_number);
-          current_infected.add(dots[j].id_number);
-          collisionOccurred = true;
+            dots[i].backgroundColor = dots[i].borderColor = '#FF6666';
+            dots[j].backgroundColor = dots[j].borderColor = '#FF6666';
+            dots[i].infected = dots[j].infected = true;
+            current_infected.add(dots[i].id_number);
+            current_infected.add(dots[j].id_number);
+            collisionOccurred = true;
+          }
         }
       }
     }
+
+    if (collisionOccurred) {
+      // change and personalize to each type of person
+      data.textContent = "Percentage Infected: " + Math.round((current_infected.size)/dots.length * 100) + "%, Number Infected: " + current_infected.size;
+    }
+
+    dots.forEach((currentPerson) => {
+      currentPerson.update();
+    });
   }
 
-  if (collisionOccurred) {
-    // change and personalize to each type of person
-    data.textContent = "Percentage Infected: " + Math.round((current_infected.size)/dots.length * 100) + "%, Number Infected: " + current_infected.size;
-  }
-
-  dots.forEach((currentPerson) => {
-    currentPerson.update();
-  });
+  updateCanvas();
 }
-
-updateCanvas();
-

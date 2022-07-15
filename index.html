@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   </head>
-  <body>
+  <body onload='init()'>
     <header>
         <h2>Pandemic Simulator</h2>
     </header>
@@ -50,7 +50,7 @@
             </table>
         </div>
     </div>
-    <table> 
+    <table>     
         <tbody>
             <tr>
                 <td>
@@ -87,10 +87,9 @@
                         <textarea readonly id='display-child-un'></textarea>
                     </div>
                 </td>
-            <tr>
-            <tr>
                 <td colspan='2'>                        
-                    <input type='submit' value='Start Simulation' id='start-btn'>
+                    <input type='submit' value='Start Simulation' id='start-btn' onclick='simulate()'>
+                    <input type='submit' value='Abort Simulation' id='stop-btn' disabled='true'>
                 </td>
             </tr>
         </tbody>
