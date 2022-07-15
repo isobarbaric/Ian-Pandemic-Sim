@@ -104,3 +104,13 @@ textarea {
     text-align: center;
 }
 
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 1em;
+    /* background-color: red; */
+    background-color: skyblue;
+    text-align: center;
+}
