@@ -1,25 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="stylesheet" href="styles.css" />
     <title>COVID-19 Game</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   </head>
   <body>
-    <canvas id="game"></canvas>
-    <div class="slidecontainer">
-        <label for='child'>Children</label> 
-        <input type="range" min="1" max="100" value="50" class="slider" name='child'>
-        <br>
-        <label for='adult'>Adults</label> 
-        <input type="range" min="1" max="100" value="50" class="slider" name='adult'>
-        <br>
-        <label for='senior'>Seniors</label> 
-        <input type="range" min="1" max="100" value="50" class="slider" name='senior'>    
-        <br>
+    <header>
+        <h2>COVID-19 Simulation</h2>
+    </header>
+    <!-- change id's to class -->
+    <div class="flex-container">
+        <!-- make key representing what each person stands for -->
+        <div class="key">
+            <h3></h3>
+        </div>
+        <canvas id="game"></canvas>
+        <!-- add another table that counts the death time for each particular person -->
+        <div class='infection-table'>
+            <div class='info'>
+                Percentage Infected: 0%
+                    <br>
+                Number Infected: 1
+            </div>
+            <table>
+                <thead>
+                    <th>
+                        <td>Person ID</td>
+                        <td>Person Type</td>
+                        <td>Time</td>
+                    </th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div id='info'>
-        Percentage Infected: 0%
-    </div>
+    <table> 
+        <tbody>
+            <tr>
+                <td>
+                    <div class="infected">
+                        <h3>Infected Selector</h3>
+                        <label for='child'>Children</label> 
+                        <input type="range" min="0" max="10" value="5" class="slider" id='child-in'>
+                        <textarea readonly id='display-child-in' col='2'></textarea>
+                        <br>
+                        <label for='adult'>Adults</label> 
+                        <input type="range" min="1" max="100" value="50" class="slider" id='adult-in'>
+                        <textarea readonly id='display-adult-in'></textarea>
+                        <br>
+                        <label for='senior'>Seniors</label> 
+                        <input type="range" min="1" max="100" value="50" class="slider" id='senior-in'>    
+                        <textarea readonly id='display-senior-in'></textarea>
+                        <br>
+                    </div>
+                </td>
+                <td>
+                    <div class="uninfected">
+                        <h3>Uninfected Selector</h3>
+                        <label for='child'>Children</label> 
+                        <input type="range" min="1" max="100" value="50" class="slider" id='child-un'>
+                        <textarea readonly id='display-child-un'></textarea>
+                        <br>
+                        <label for='adult'>Adults</label> 
+                        <input type="range" min="1" max="100" value="50" class="slider" id='adult-un'>
+                        <textarea readonly id='display-child-un'></textarea>
+                        <br>
+                        <label for='senior'>Seniors</label> 
+                        <input type="range" min="1" max="100" value="50" class="slider" id='senior-un'>    
+                        <br>
+                        <textarea readonly id='display-child-un'></textarea>
+                    </div>
+                </td>
+            <tr>
+            <tr>
+                <td colspan='2'>                        
+                    <input type='submit' value='Start Simulation' id='start-btn'>
+                </td>
+            </tr>
+        </tbody>
+    </table>
     <script src="script.js"></script>
   </body>
 </html>

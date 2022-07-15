@@ -1,16 +1,18 @@
 
 let canvas = document.querySelector('#game')
-let data = document.querySelector('#info')
+let data = document.querySelector('.info')
 
 // resize canvas according to screen size
-canvas.width = 0.8*window.innerWidth;
-canvas.height = 0.8*window.innerHeight;
+canvas.width = 0.5*window.innerWidth;
+canvas.height = 0.5*window.innerHeight;
 
 // dynamically size window whenever necess  ary
 window.addEventListener('resize', function(){
-  canvas.width = 0.8*window.innerWidth;
-  canvas.height = 0.8*window.innerHeight; 
+  canvas.width = 0.5*window.innerWidth;
+  canvas.height = 0.5*window.innerHeight; 
 });
+
+
 
 let context = canvas.getContext('2d');  
 
@@ -120,6 +122,7 @@ let current_infected = new Set();
 dots.push(new Person(id_counter, "child", true));
 current_infected.add(id_counter);
 id_counter++;
+data.textContent = "Percentage Infected: " + Math.round(1/dots.length * 100) + "%";
 
 let updateCanvas = function() {
   requestAnimationFrame(updateCanvas);
@@ -144,7 +147,6 @@ let updateCanvas = function() {
           dots[i].infected = dots[j].infected = true;
           current_infected.add(dots[i].id_number);
           current_infected.add(dots[j].id_number);
-
           collisionOccurred = true;
         }
       }
@@ -152,8 +154,8 @@ let updateCanvas = function() {
   }
 
   if (collisionOccurred) {
-    // console.log("Percentage Infected: " + Math.round((current_infected.size)/dots.length * 100) + "%");
-    data.textContent = "Percentage Infected: " + Math.round((current_infected.size)/dots.length * 100) + "%";
+    // change and personalize to each type of person
+    data.textContent = "Percentage Infected: " + Math.round((current_infected.size)/dots.length * 100) + "%, Number Infected: " + current_infected.size;
   }
 
   dots.forEach((currentPerson) => {
