@@ -1,0 +1,17 @@
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+canvas { 
+    /* so that we can see the canvas's boundaries */
+    border: 1px solid black; 
+
+    /* horizontal, vertical centering */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);    
+}
