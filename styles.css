@@ -18,7 +18,8 @@ header {
     width: 100%;
     text-align: center;
     padding: 1em;
-    background-color: skyblue;
+    background-color: #634e87;
+    color: #f97e72;
 }   
 
 body {
@@ -111,6 +112,7 @@ textarea {
     width: 100%;
     padding: 1em;
     /* background-color: red; */
-    background-color: skyblue;
+    background-color: #634e87;
+    color: #f97e72;
     text-align: center;
 }
