@@ -1,0 +1,5 @@
+
+- collision detection with
+    - other dots
+    - walls of canvas
+
