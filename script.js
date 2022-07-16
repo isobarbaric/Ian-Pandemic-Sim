@@ -107,28 +107,51 @@ class Person {
   } 
 }
 
-let keepGoing = true;
 let simulation_button = document.querySelector('#start-btn')
-let exit_button = document.querySelector('#stop-btn')
-exit_button.addEventListener('click', function() {
-  simulation_button.disabled = false;
-  keepGoing = false;
-  this.disabled = true;
-});
+
+function secondsElapsedTime(start_time, end_time, rounded) {
+  var timeDiff = end_time - start_time; 
+  timeDiff /= 1000;
+  if (rounded) return Math.round(timeDiff);
+  return timeDiff;
+} 
+
+const stopwatch = document.querySelector('.stopwatch')
+const infection_table = document.querySelector('.outline')
 
 function simulate() {
+  let start_time = new Date();
+
+  stopwatch.textContent = secondsElapsedTime(start_time, new Date(), false) + " seconds elapsed";
+  let stopwatch_unit = setInterval(function() {
+    let suffix = " second";
+    let time_gone = secondsElapsedTime(start_time, new Date(), true);
+    if (time_gone > 1) suffix += 's';
+    suffix += " elapsed"
+    stopwatch.textContent = secondsElapsedTime(start_time, new Date(), true) + suffix;
+  }, 1000);
+
+  console.log(infection_table);
+  infection_table.innerHTML = `<table>
+    <thead>
+        <tr>
+            <th>Person ID</th>
+            <th>Person Type</th>
+            <th>Time</th>
+        </tr>
+    </thead>
+    <tbody class='content-area'>
+    </tbody>
+  </table>`
+
+
   simulation_button.disabled = true;
-  // setting true for turning on after initial click
-  simulation_button.addEventListener('click', function() {
-    keepGoing = true;
-  });
-  exit_button.disabled = false;
 
   id_counter = 1
   let dots = []
   let ages = ['child', 'adult', 'senior']
-
-  for (let i = 0; i < 40; i++) {
+  
+  for (let i = 0; i < 25; i++) {
     dots.push(new Person(id_counter, ages[i % 3], false));
     dots[i].draw();
     id_counter++;
@@ -142,6 +165,14 @@ function simulate() {
   id_counter++;
   data.textContent = "Percentage Infected: " + Math.round(1/dots.length * 100) + "%, Number Infected: 1";
 
+  let total_infections = 0;
+  let total_infection_chance = 0;
+
+  // let collisions = new Set();
+
+  let table_contents = document.querySelector('.content-area');
+  let progress_bar = document.getElementById('progress');
+
   let updateCanvas = function() {
     // stop simulating once all of the people are infected
     if (current_infected.size != dots.length) {
@@ -149,15 +180,12 @@ function simulate() {
     } else {
       // dim canvas once and set text on it saying "all infected"
       // canvas.opacity = 0.5;
+      console.log(total_infections + "/" + total_infection_chance);
+      simulation_button.disabled = false;
+      clearInterval(stopwatch_unit);
       return
     }
 
-    // functionality for abort button
-    if (!keepGoing) {      
-      console.log('i keep returning')
-      return;
-    }
-      
     context.clearRect(0, 0, canvas.width, canvas.height);
 
     let collisionOccurred = false;
@@ -165,20 +193,56 @@ function simulate() {
     for (let i = 0; i < dots.length; i++) {
       for (let j = 0; j < dots.length; j++) {
         if (i == j) continue;
+        if (Number(dots[i].infected) + Number(dots[j].infected) == 0) {
+          continue
+        }
+        if (Number(dots[i].infected) + Number(dots[j].infected) == 2) {
+          continue
+        }
         if (Person.intersect(dots[i], dots[j])) {
+          console.log("collision occured");
+          collisionOccurred = true;
+
           // don't count situation where both are infected
-          if (dots[i].infected && dots[j].infected) {
-            continue
-          }
-          if (dots[i].infected || dots[j].infected) {
-            // differentiate between who is being infected, factor probabilities in
+          if (Number(dots[i].infected) + Number(dots[j].infected) == 1) {
+            let infection_spread = false;
+            let other_ind = i + j;
+            if (dots[i].infected) other_ind -= i;
+            else other_ind -= j;
+
+            let person_type = dots[other_ind].age_group;
+            
+            if (person_type == 'child') {
+              // child has 1/3 probability of being infected
+              if (Math.round((Math.random()*3)+1) == 3) infection_spread = true
+            } else if (person_type === 'adult') { 
+              // adult has 1/2 probability of being infected
+              if (Math.round((Math.random()*2)+1) == 1) infection_spread = true
+            } else if (person_type === 'senior') { 
+              // senior has 2/3 probability of being infected
+              if (Math.round((Math.random()*3)+1) >= 2) infection_spread = true
+            } 
+
+            total_infection_chance++;
+        
+            dots[i].stepX *= -1;
+            dots[i].stepY *= -1;
+            
+            if (!infection_spread) {
+              continue
+            }
+
+            table_contents.innerHTML += "\n<tr><td>" + other_ind + "</td><td>" + dots[other_ind].age_group + "</td><td>" + secondsElapsedTime(start_time, new Date(), false) + "</td></tr>";
+
+            total_infections++;
+
+            // progress_bar.innerHTML = Math.round((current_infected.size)/dots.length * 100) + "%";
 
             dots[i].backgroundColor = dots[i].borderColor = '#FF6666';
             dots[j].backgroundColor = dots[j].borderColor = '#FF6666';
             dots[i].infected = dots[j].infected = true;
             current_infected.add(dots[i].id_number);
             current_infected.add(dots[j].id_number);
-            collisionOccurred = true;
           }
         }
       }

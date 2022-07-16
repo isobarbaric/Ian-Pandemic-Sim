@@ -9,45 +9,28 @@
   </head>
   <body onload='init()'>
     <header>
-        <h2>Pandemic Simulator</h2>
+        <h2><a href='/index.html' class='link'>Pandemic Simulator</a></h2>
     </header>
     <!-- change id's to class -->
     <div class="flex-container">
         <!-- make key representing what each person stands for -->
-        <div class="key">
-            <h3></h3>
+        <div class="infection-table">
+            <h3 class='header_text'>Infection Log</h3>
+            <h4 class='outline'> 
+                A table will appear below once the simulation is started.
+            <h4>                
         </div>
         <canvas id="game"></canvas>
         <!-- add another table that counts the death time for each particular person -->
-        <div class='infection-table'>
-            <div class='info'>
+        <div class='table'>
+            <h3 class='header_text'>Stopwatch</h3>
+            <div class='stopwatch'>
+                <h4>A stopwatch will appear hear once the simulation is started.</h4>
             </div>
-            <table>
-                <thead>
-                    <th>
-                        <td>Person ID</td>
-                        <td>Person Type</td>
-                        <td>Time</td>
-                    </th>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
+            <h3 class='header_text'>Infection Data</h3>
+            <div class='info'>
+                <div class='progress-bar'></div>
+            </div>
         </div>
     </div>
     <table class='bottom'>     
@@ -89,7 +72,6 @@
                 </td>
                 <td colspan='2'>                        
                     <input type='submit' value='Start Simulation' id='start-btn' onclick='simulate()'>
-                    <input type='submit' value='Abort Simulation' id='stop-btn' disabled='true'>
                 </td>
             </tr>
         </tbody>
