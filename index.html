@@ -33,44 +33,60 @@
             </div>
         </div>
     </div>
-    <div class="infected">
-        <h3>Infected Selector</h3>
+    <div class='bottom'>
+        <div class="infected">
+            <h3 class='header_text'>Infected Selector</h3>
 
-        <label for='child_in'>Children</label> 
-        <input type="range" min="0" max="5" value="3" id='child_in' oninput="validateInput(this); display_child_in.value = child_in.value;" />
-        <input type="number" min="0" max="5" value="3" id='display_child_in' oninput="validateInput(this); child_in.value = display_child_in.value" />
-        <br>
+            <div class='label-unit'>
+                <label for='child_in'>Children</label> 
+                <input type="range" min="0" max="5" value="3" id='child_in' oninput="validateInput(this); display_child_in.value = child_in.value;" />
+                <input type="number" min="0" max="5" value="3" id='display_child_in' oninput="validateInput(this); child_in.value = display_child_in.value" />
+                <br>
+            </div>
 
-        <label for='adult_in'>Adults</label> 
-        <input type="range" min="0" max="5" value="3" id='adult_in' oninput="validateInput(this); display_adult_in.value = adult_in.value" />
-        <input type="number" min="0" max="5" value="3" id='display_adult_in' oninput="validateInput(this); adult_in.value = display_adult_in.value" />
-        <br>
+            <div class='label-unit'>
+                <label for='adult_in'>Adults</label> 
+                <input type="range" min="0" max="5" value="3" id='adult_in' oninput="validateInput(this); display_adult_in.value = adult_in.value" />
+                <input type="number" min="0" max="5" value="3" id='display_adult_in' oninput="validateInput(this); adult_in.value = display_adult_in.value" />
+                <br>
+            </div>
 
-        <label for='senior_in'>Seniors</label> 
-        <input type="range" min="0" max="5" value="3" id='senior_in' oninput="validateInput(this); display_senior_in.value = senior_in.value" />
-        <input type="number" min="0" max="5" value="3" id='display_senior_in' oninput="validateInput(this); senior_in.value = display_senior_in.value" />
-        <br>
+            <div class='label-unit'>
+                <label for='senior_in'>Seniors</label> 
+                <input type="range" min="0" max="5" value="3" id='senior_in' oninput="validateInput(this); display_senior_in.value = senior_in.value" />
+                <input type="number" min="0" max="5" value="3" id='display_senior_in' oninput="validateInput(this); senior_in.value = display_senior_in.value" />
+                <br>
+            </div>
+        </div>
+        <div class="uninfected">
+            <h3 class='header_text'>Uninfected Selector</h3>
+
+            <div class='label-unit'>
+                <label for='child_un'>Children</label> 
+                <input type="range" min="0" max="5" value="3" id='child_un' oninput="validateInput(this); display_child_un.value = child_un.value" />
+                <input type="number" min="0" max="5" value="3" id='display_child_un' oninput="validateInput(this); child_un.value = display_child_un.value" />
+                <br>
+            </div>
+
+            <div class='label-unit'>
+                <label for='adult_un'>Adults</label> 
+                <input type="range" min="0" max="5" value="3" id='adult_un' oninput="validateInput(this); display_adult_un.value = adult_un.value" />
+                <input type="number" min="0" max="5" value="3" id='display_adult_un' oninput="validateInput(this); adult_un.value = display_adult_un.value" />
+                <br>
+            </div>
+
+            <div class='label-unit'>
+                <label for='senior_un'>Seniors</label> 
+                <input type="range" min="0" max="5" value="3" id='senior_un' oninput="validateInput(this); display_senior_un.value = senior_in.value" />
+                <input type="number" min="0" max="5" value="3" id='display_senior_un' oninput="validateInput(this); senior_un.value = display_senior_un.value;" />
+                <br>
+            </div>
+        </div>
+        <div>
+            <input type='submit' value='Start Simulation' id='start-btn' onclick='simulate()' class='button'>
+            <input type='submit' value='Collect JSON Data' id='json-btn' onclick='downloadData()' class='button'>
+        </div>
     </div>
-    <div class="uninfected">
-        <h3>Uninfected Selector</h3>
-
-        <label for='child_un'>Children</label> 
-        <input type="range" min="0" max="5" value="3" id='child_un' oninput="validateInput(this); display_child_un.value = child_un.value" />
-        <input type="number" min="0" max="5" value="3" id='display_child_un' oninput="validateInput(this); child_un.value = display_child_un.value" />
-        <br>
-
-        <label for='adult_un'>Adults</label> 
-        <input type="range" min="0" max="5" value="3" id='adult_un' oninput="validateInput(this); display_adult_un.value = adult_un.value" />
-        <input type="number" min="0" max="5" value="3" id='display_adult_un' oninput="validateInput(this); adult_un.value = display_adult_un.value" />
-        <br>
-
-        <label for='senior_un'>Seniors</label> 
-        <input type="range" min="0" max="5" value="3" id='senior_un' oninput="validateInput(this); display_senior_un.value = senior_in.value" />
-        <input type="number" min="0" max="5" value="3" id='display_senior_un' oninput="validateInput(this); senior_un.value = display_senior_un.value;" />
-        <br>
-    </div>
-    <input type='submit' value='Start Simulation' id='start-btn' onclick='simulate()'>
-    <input type='submit' value='Collect JSON Data' id='json-btn' onclick='downloadData()'>
     <script src="script.js"></script>
     <footer>
         <div class='footer'>

@@ -219,6 +219,7 @@ function simulate() {
   Person.reset();
 
   let start_time = new Date();
+  json_button.disabled = true;
 
   stopwatch.textContent = secondsElapsedTime(start_time, new Date(), false) + " seconds elapsed";
   let stopwatch_unit = setInterval(function() {
