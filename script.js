@@ -116,6 +116,17 @@ function secondsElapsedTime(start_time, end_time, rounded) {
   return timeDiff;
 } 
 
+function validateInput(sender) {
+  let min = sender.min;
+  let max = sender.max;
+  let value = parseInt(sender.value);
+  if (value > max) {
+    sender.value = max;
+  } else if (value < min) {
+    sender.value = min;
+  }
+}
+
 const stopwatch = document.querySelector('.stopwatch')
 const infection_table = document.querySelector('.outline')
 

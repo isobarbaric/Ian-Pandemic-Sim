@@ -76,6 +76,7 @@ canvas {
 
 .infected {
     width: 15em;
+    margin: 1em;
     /* margin: 1em; */
     /* margin-top: 0.5em; */
     /* border: 1px solid black; */
