@@ -24,10 +24,17 @@ function init() {
 
   json_button.disabled = true;
 
-  context.fillStyle = "white";
-  context.fillRect(0, 0, canvas.width, canvas.height);
-  // context.font = "30px Nunito Sans";
-  context.fillText("Hello World", 10, 50);
+  context.fillStyle = 'black'
+  context.textBaseline = 'middle'; 
+  context.textAlign = "center";
+
+  context.font = "2em Nunito Sans, sans-serif";
+  context.fillText("Get Started!", canvas.width/2, canvas.height/2-40);
+
+  context.font = "1em Nunito Sans, sans-serif";
+  context.fillText("Select criteria from the two selectors below to choose input conditions.", canvas.width/2, canvas.height/2);
+  context.fillText("To better understand the simulation, you can visit the section labeled 'Key' details each type of dot.", canvas.width/2, canvas.height/2+20);
+  context.fillText("Once you have chosen the desired inputs, press the 'Start Simulation' button to start the simulation.", canvas.width/2, canvas.height/2 + 40);
 }
 
 // creating a class for the Person.dots  
