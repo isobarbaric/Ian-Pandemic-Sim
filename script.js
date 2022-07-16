@@ -19,7 +19,7 @@ function init() {
   context = canvas.getContext('2d');  
 }
 
-// creating a class for the dots  
+// creating a class for the Person.dots  
 class Person {
 
   static borderWidth = 0;
@@ -27,7 +27,10 @@ class Person {
   static adultSpeed = Person.seniorSpeed * 1.5;
   static childSpeed = Person.adultSpeed * 1.5; 
   static steps = [-1, 1]
-
+  static id_counter = 0
+  static dots = []
+  static ages = ['child', 'adult', 'senior']
+  
   constructor(id_number, age_group, infected) {
     this.id_number = id_number;
     this.age_group = age_group;
@@ -105,6 +108,11 @@ class Person {
   static generateRandomInt(min, max) {
     return Math.trunc(Math.random() * (max - min) + min);
   } 
+
+  static addPerson(age_group, infected) {
+    Person.dots.push(new Person(Person.id_counter, age_group, infected));
+    Person.id_counter++;
+  }
 }
 
 let simulation_button = document.querySelector('#start-btn')
@@ -130,6 +138,42 @@ function validateInput(sender) {
 const stopwatch = document.querySelector('.stopwatch')
 const infection_table = document.querySelector('.outline')
 
+let current_infected = new Set();
+
+function addInfected() {
+  let totalInfected = 0;
+  // adding children
+  for (let i = 0; i < parseInt(document.getElementById('child_in').value); i++, totalInfected++) {
+    Person.addPerson("child", true);
+    current_infected.add(Person.id_counter-1);
+  }
+  // adding adults
+  for (let i = 0; i < parseInt(document.getElementById('adult_in').value); i++, totalInfected++) {
+    Person.addPerson("adult", true);
+    current_infected.add(Person.id_counter-1);
+  }
+  // adding seniors
+  for (let i = 0; i < parseInt(document.getElementById('senior_in').value); i++, totalInfected++) {
+    Person.addPerson("senior", true);
+    current_infected.add(Person.id_counter-1);
+  }
+  return totalInfected;
+}
+
+function addUninfected() {
+  let totalUninfected = 0;
+  // adding children
+  for (let i = 0; i < parseInt(document.getElementById('child_un').value); i++, totalUninfected++)
+    Person.addPerson("child", false);
+  // adding adults
+  for (let i = 0; i < parseInt(document.getElementById('adult_un').value); i++, totalUninfected++)
+    Person.addPerson("adult", false);
+  // adding seniors
+  for (let i = 0; i < parseInt(document.getElementById('senior_un').value); i++, totalUninfected++)
+    Person.addPerson("senior", false);  
+  return totalUninfected;
+}
+
 function simulate() {
   let start_time = new Date();
 
@@ -142,7 +186,6 @@ function simulate() {
     stopwatch.textContent = secondsElapsedTime(start_time, new Date(), true) + suffix;
   }, 1000);
 
-  console.log(infection_table);
   infection_table.innerHTML = `<table>
     <thead>
         <tr>
@@ -155,43 +198,26 @@ function simulate() {
     </tbody>
   </table>`
 
-
   simulation_button.disabled = true;
 
-  id_counter = 1
-  let dots = []
-  let ages = ['child', 'adult', 'senior']
-  
-  for (let i = 0; i < 25; i++) {
-    dots.push(new Person(id_counter, ages[i % 3], false));
-    dots[i].draw();
-    id_counter++;
-  }
+  let totalInfected = addUninfected();
+  addInfected();
 
-  let current_infected = new Set();
+  data.textContent = "Percentage Infected: " + Math.round(totalInfected/Person.dots.length * 100) + "%, Number Infected: 1";
 
-  // adding infected people
-  dots.push(new Person(id_counter, "child", true));
-  current_infected.add(id_counter);
-  id_counter++;
-  data.textContent = "Percentage Infected: " + Math.round(1/dots.length * 100) + "%, Number Infected: 1";
-
-  let total_infections = 0;
-  let total_infection_chance = 0;
-
-  // let collisions = new Set();
+  let totalInfectionOpportunities = 0;
 
   let table_contents = document.querySelector('.content-area');
   let progress_bar = document.getElementById('progress');
 
   let updateCanvas = function() {
     // stop simulating once all of the people are infected
-    if (current_infected.size != dots.length) {
+    if (current_infected.size != Person.dots.length) {
       requestAnimationFrame(updateCanvas);
     } else {
       // dim canvas once and set text on it saying "all infected"
       // canvas.opacity = 0.5;
-      console.log(total_infections + "/" + total_infection_chance);
+      console.log(totalInfected + "/" + totalInfectionOpportunities);
       simulation_button.disabled = false;
       clearInterval(stopwatch_unit);
       return
@@ -201,27 +227,27 @@ function simulate() {
 
     let collisionOccurred = false;
     // collision detection
-    for (let i = 0; i < dots.length; i++) {
-      for (let j = 0; j < dots.length; j++) {
+    for (let i = 0; i < Person.dots.length; i++) {
+      for (let j = 0; j < Person.dots.length; j++) {
         if (i == j) continue;
-        if (Number(dots[i].infected) + Number(dots[j].infected) == 0) {
+        if (Number(Person.dots[i].infected) + Number(Person.dots[j].infected) == 0) {
           continue
         }
-        if (Number(dots[i].infected) + Number(dots[j].infected) == 2) {
+        if (Number(Person.dots[i].infected) + Number(Person.dots[j].infected) == 2) {
           continue
         }
-        if (Person.intersect(dots[i], dots[j])) {
+        if (Person.intersect(Person.dots[i], Person.dots[j])) {
           console.log("collision occured");
           collisionOccurred = true;
 
           // don't count situation where both are infected
-          if (Number(dots[i].infected) + Number(dots[j].infected) == 1) {
+          if (Number(Person.dots[i].infected) + Number(Person.dots[j].infected) == 1) {
             let infection_spread = false;
             let other_ind = i + j;
-            if (dots[i].infected) other_ind -= i;
+            if (Person.dots[i].infected) other_ind -= i;
             else other_ind -= j;
 
-            let person_type = dots[other_ind].age_group;
+            let person_type = Person.dots[other_ind].age_group;
             
             if (person_type == 'child') {
               // child has 1/3 probability of being infected
@@ -234,26 +260,26 @@ function simulate() {
               if (Math.round((Math.random()*3)+1) >= 2) infection_spread = true
             } 
 
-            total_infection_chance++;
+            totalInfectionOpportunities++;
         
-            dots[i].stepX *= -1;
-            dots[i].stepY *= -1;
+            Person.dots[i].stepX *= -1;
+            Person.dots[i].stepY *= -1;
             
             if (!infection_spread) {
               continue
             }
 
-            table_contents.innerHTML += "\n<tr><td>" + other_ind + "</td><td>" + dots[other_ind].age_group + "</td><td>" + secondsElapsedTime(start_time, new Date(), false) + "</td></tr>";
+            table_contents.innerHTML += "\n<tr><td>" + other_ind + "</td><td>" + Person.dots[other_ind].age_group + "</td><td>" + secondsElapsedTime(start_time, new Date(), false) + "</td></tr>";
 
-            total_infections++;
+            totalInfected++;
 
-            // progress_bar.innerHTML = Math.round((current_infected.size)/dots.length * 100) + "%";
+            // progress_bar.innerHTML = Math.round((current_infected.size)/Person.dots.length * 100) + "%";
 
-            dots[i].backgroundColor = dots[i].borderColor = '#FF6666';
-            dots[j].backgroundColor = dots[j].borderColor = '#FF6666';
-            dots[i].infected = dots[j].infected = true;
-            current_infected.add(dots[i].id_number);
-            current_infected.add(dots[j].id_number);
+            Person.dots[i].backgroundColor = Person.dots[i].borderColor = '#FF6666';
+            Person.dots[j].backgroundColor = Person.dots[j].borderColor = '#FF6666';
+            Person.dots[i].infected = Person.dots[j].infected = true;
+            current_infected.add(Person.dots[i].id_number);
+            current_infected.add(Person.dots[j].id_number);
           }
         }
       }
@@ -261,10 +287,10 @@ function simulate() {
 
     if (collisionOccurred) {
       // change and personalize to each type of person
-      data.textContent = "Percentage Infected: " + Math.round((current_infected.size)/dots.length * 100) + "%, Number Infected: " + current_infected.size;
+      data.textContent = "Percentage Infected: " + Math.round((current_infected.size)/Person.dots.length * 100) + "%, Number Infected: " + current_infected.size;
     }
 
-    dots.forEach((currentPerson) => {
+    Person.dots.forEach((currentPerson) => {
       currentPerson.update();
     });
 
