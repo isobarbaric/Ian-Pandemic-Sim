@@ -4,6 +4,7 @@ let canvas, data, content;
 let stopwatch = document.querySelector('.stopwatch')
 let infection_table = document.querySelector('.outline')
 let simulation_button = document.querySelector('#start-btn')
+let json_button = document.querySelector('#json-btn')
 
 function init() {
   canvas = document.querySelector('#game')
@@ -20,11 +21,12 @@ function init() {
   });
 
   context = canvas.getContext('2d');  
+
+  json_button.disabled = true;
 }
 
 // creating a class for the Person.dots  
 class Person {
-
   static borderWidth = 0;
   static seniorSpeed = 1;
   static adultSpeed = Person.seniorSpeed * 1.5;
@@ -117,12 +119,16 @@ class Person {
     Person.dots.push(new Person(Person.id_counter, age_group, infected));
     Person.id_counter++;
   }
+
+  static reset() {
+    Person.id_counter = 1
+    Person.dots = []
+    Person.current_infected = new Set();  
+  }
+
 }
 
 // to be called when given invalid input, 
-function reset() {
-
-}
 
 function secondsElapsedTime(start_time, end_time, rounded) {
   var timeDiff = end_time - start_time; 
@@ -176,7 +182,42 @@ function addUninfected() {
   return totalUninfected;
 }
 
+// takem from StackOverflow
+function tableToJson(table) { 
+  var data = [];
+  for (var i=1; i<table.rows.length; i++) { 
+      var tableRow = table.rows[i]; 
+      var rowData = []; 
+      for (var j=0; j<tableRow.cells.length; j++) { 
+          rowData.push(tableRow.cells[j].innerHTML);; 
+      } 
+      data.push(rowData); 
+  } 
+  return data; 
+}
+
+// taken from Stack Overflow
+function download(filename, text) {
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
+  element.style.display = 'none';
+  document.body.appendChild(element);
+  element.click();
+  document.body.removeChild(element);
+}
+
+function downloadData() {
+  let data_table = document.getElementsByTagName('table')[0]
+  let json_data = JSON.stringify(Object.assign({}, tableToJson(data_table)));
+  console.log(json_data);
+  // e.preventDefault();
+  download("data.json", json_data);
+}
+
 function simulate() {
+  Person.reset();
+
   let start_time = new Date();
 
   stopwatch.textContent = secondsElapsedTime(start_time, new Date(), false) + " seconds elapsed";
@@ -226,6 +267,7 @@ function simulate() {
       // canvas.opacity = 0.5;
       console.log(totalInfected + "/" + totalInfectionOpportunities);
       simulation_button.disabled = false;
+      json_button.disabled = false;
       clearInterval(stopwatch_unit);
       return
     }
