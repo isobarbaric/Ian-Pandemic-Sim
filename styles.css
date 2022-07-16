@@ -28,7 +28,25 @@ header {
     padding: 1em;
     background-color: var(--color-primary);
     color: #f63623;
+    display: flex;
+    justify-content: center;
 }   
+
+h1 {
+    display: inline;
+}
+
+.title {
+    width: 55%;
+    /* font-size: 1.2em; */
+}
+
+.nav-links {
+    width: 45%;
+    display: flex;
+    font-size: 1.1em;
+    margin: 0.6em;
+}
 
 body {
     background-color: '#fff5be';
@@ -44,6 +62,7 @@ body {
 
 .container > div, #game {
     margin: 0.5em;
+    margin-bottom: -0.2em;
 } 
 
 .infection-table {
@@ -260,6 +279,8 @@ textarea {
 .link {
     text-decoration: none;
     color: var(--color-secondary);
+    padding: 2em;
+    margin: 1em;
 }
 
 .link:hover {
