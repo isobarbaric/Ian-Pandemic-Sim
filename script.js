@@ -23,6 +23,11 @@ function init() {
   context = canvas.getContext('2d');  
 
   json_button.disabled = true;
+
+  context.fillStyle = "white";
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  // context.font = "30px Nunito Sans";
+  context.fillText("Hello World", 10, 50);
 }
 
 // creating a class for the Person.dots  
@@ -281,6 +286,13 @@ function simulate() {
       json_button.disabled = false;
       stopwatch.textContent = secondsElapsedTime(start_time, new Date(), false) + " elapsed";
       clearInterval(stopwatch_unit);
+      context.fillStyle = "rgba(255, 255, 200, 0.8)";
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.font = "2em Nunito Sans, sans-serif";
+      context.fillStyle = 'black'
+      context.textBaseline = 'middle'; 
+      context.textAlign = "center";
+      context.fillText("Everyone was infected...simulation complete", canvas.width/2, canvas.height/2);
       return
     }
 
