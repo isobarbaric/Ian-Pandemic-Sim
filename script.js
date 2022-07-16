@@ -1,6 +1,9 @@
 
-
+// global variables
 let canvas, data, content;
+let stopwatch = document.querySelector('.stopwatch')
+let infection_table = document.querySelector('.outline')
+let simulation_button = document.querySelector('#start-btn')
 
 function init() {
   canvas = document.querySelector('#game')
@@ -27,9 +30,10 @@ class Person {
   static adultSpeed = Person.seniorSpeed * 1.5;
   static childSpeed = Person.adultSpeed * 1.5; 
   static steps = [-1, 1]
-  static id_counter = 0
+  static id_counter = 1
   static dots = []
   static ages = ['child', 'adult', 'senior']
+  static current_infected = new Set();
   
   constructor(id_number, age_group, infected) {
     this.id_number = id_number;
@@ -115,7 +119,10 @@ class Person {
   }
 }
 
-let simulation_button = document.querySelector('#start-btn')
+// to be called when given invalid input, 
+function reset() {
+
+}
 
 function secondsElapsedTime(start_time, end_time, rounded) {
   var timeDiff = end_time - start_time; 
@@ -135,27 +142,22 @@ function validateInput(sender) {
   }
 }
 
-const stopwatch = document.querySelector('.stopwatch')
-const infection_table = document.querySelector('.outline')
-
-let current_infected = new Set();
-
 function addInfected() {
   let totalInfected = 0;
   // adding children
   for (let i = 0; i < parseInt(document.getElementById('child_in').value); i++, totalInfected++) {
     Person.addPerson("child", true);
-    current_infected.add(Person.id_counter-1);
+    Person.current_infected.add(Person.dots.at(-1).id_number);
   }
   // adding adults
   for (let i = 0; i < parseInt(document.getElementById('adult_in').value); i++, totalInfected++) {
     Person.addPerson("adult", true);
-    current_infected.add(Person.id_counter-1);
+    Person.current_infected.add(Person.dots.at(-1).id_number);
   }
   // adding seniors
   for (let i = 0; i < parseInt(document.getElementById('senior_in').value); i++, totalInfected++) {
     Person.addPerson("senior", true);
-    current_infected.add(Person.id_counter-1);
+    Person.current_infected.add(Person.dots.at(-1).id_number);
   }
   return totalInfected;
 }
@@ -200,8 +202,13 @@ function simulate() {
 
   simulation_button.disabled = true;
 
-  let totalInfected = addUninfected();
-  addInfected();
+  addUninfected();
+  let totalInfected = addInfected();
+
+  if (totalInfected == 0) {
+    alert("Please select a non-zero number of infected people.");
+    return;
+  }
 
   data.textContent = "Percentage Infected: " + Math.round(totalInfected/Person.dots.length * 100) + "%, Number Infected: 1";
 
@@ -212,7 +219,7 @@ function simulate() {
 
   let updateCanvas = function() {
     // stop simulating once all of the people are infected
-    if (current_infected.size != Person.dots.length) {
+    if (Person.current_infected.size != Person.dots.length) {
       requestAnimationFrame(updateCanvas);
     } else {
       // dim canvas once and set text on it saying "all infected"
@@ -278,8 +285,8 @@ function simulate() {
             Person.dots[i].backgroundColor = Person.dots[i].borderColor = '#FF6666';
             Person.dots[j].backgroundColor = Person.dots[j].borderColor = '#FF6666';
             Person.dots[i].infected = Person.dots[j].infected = true;
-            current_infected.add(Person.dots[i].id_number);
-            current_infected.add(Person.dots[j].id_number);
+            Person.current_infected.add(Person.dots[i].id_number);
+            Person.current_infected.add(Person.dots[j].id_number);
           }
         }
       }
@@ -287,7 +294,7 @@ function simulate() {
 
     if (collisionOccurred) {
       // change and personalize to each type of person
-      data.textContent = "Percentage Infected: " + Math.round((current_infected.size)/Person.dots.length * 100) + "%, Number Infected: " + current_infected.size;
+      data.textContent = "Percentage Infected: " + Math.round((Person.current_infected.size)/Person.dots.length * 100) + "%, Number Infected: " + Person.current_infected.size;
     }
 
     Person.dots.forEach((currentPerson) => {

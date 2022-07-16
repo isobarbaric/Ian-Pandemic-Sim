@@ -29,7 +29,7 @@ body {
 .flex-container {
     display: flex;
     flex-wrap: nowrap;
-    height: 55%;
+    height: 65%;
 }
 
 .flex-container > div, canvas {
@@ -46,7 +46,7 @@ body {
 .infection-table {
     border: 4px solid #87eec8; 
     border-radius: 2em;    
-    width: 25%;
+    width: 30%;
     padding: 1em;
 }
 
@@ -59,46 +59,31 @@ body {
 
 canvas { 
     background-color: '#fff5be';
-
-    /* so that we can see the canvas's boundaries */
     border: 4px solid #87eec8; 
     border-radius: 2em;    
-    width: 55%;
-
     display: inline;
-
-    /* centering, setting margins */
-    /* margin: auto;
     margin-top: 1em;
     margin-bottom: 1em;
-    display: block; */
+    display: block; 
 }
 
 .infected {
     width: 15em;
     margin: 1em;
-    /* margin: 1em; */
-    /* margin-top: 0.5em; */
-    /* border: 1px solid black; */
-    /* padding: 0.5em; */
+    float: left;
 }
 
 .uninfected {
-    /* width: 200px; */
     width: 15em;
     margin: 1em;
-    /* margin-top: 0.5em; */
-    /* border: 1px solid black; */
-    /* padding: 0.5em; */
+    float: left;
 }
 
 .bottom {
     width: 100vh;
-    /* height: 29%; */
     margin: 0.5em;
     margin-top: 0;
     margin-bottom: 0;
-    /* height: 25%; */
 }
 
 .header_text {
@@ -106,12 +91,20 @@ canvas {
     margin-top: 0.5em;
 }
 
-.stopwatch, table, .outline {
+.stopwatch, table {
     background-color: beige;
     margin: 1.5em;
     border-radius: 1.2em;
     text-align: center;
     padding: 0.4em;
+}
+
+.outline {
+    background-color: beige;
+    margin: 0.8em;
+    padding: 0.4em;
+    border-radius: 1.2em;
+    text-align: center;
 }
 
 table {
@@ -121,19 +114,12 @@ table {
     text-align: center; 
     table-layout: fixed;
     width: 100%;
-
-    /* display: block;  */
-    /* height: 80%;
-    overflow-y: scroll; */
 }
 
 td {
     text-align: center; 
     vertical-align: middle;
     border: 1px solid black;
-    /* display: flex;
-    align-items: center;
-    align-content: center; */
 }
 
 td:empty::after{
@@ -147,7 +133,6 @@ textarea {
 #selector {
     margin: auto;
     width: 50%;
-    /* border: 3px solid green; */
     padding: 10px;  
 }
 
