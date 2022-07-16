@@ -352,11 +352,14 @@ function loadChild() {
   var popup = document.getElementById("child");
   popup.classList.toggle("show");
 }
+
 function loadAdult() {
   var popup = document.getElementById("adult");
   popup.classList.toggle("show");
 }
+
 function loadSenior() {
   var popup = document.getElementById("senior");
   popup.classList.toggle("show");
 }
+

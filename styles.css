@@ -91,6 +91,23 @@ input[type=number] {
     color: var(--color-secondary);
     border-radius: 1em;
     padding: 0.5em;
+    text-align: center;
+}
+
+/* images for the key section */
+
+img {
+    height: 1.2em;
+    width: auto;
+    padding-left: 1em;
+}
+
+#adult-dot {
+    height: 2em;
+}
+
+#senior-dot {
+    height: 1.5em;
 }
 
 .infected {
@@ -258,11 +275,16 @@ textarea {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    border: 2px solid white;
+    border-radius: 1em;
+    margin-bottom: 0.2em;
+    display: inline-block;
+    width: 50%;
 }
     
 .popup .popuptext {
     visibility: hidden;
-    width: 160px;
+    width: 220px;
     background-color: #555;
     color: #fff;
     text-align: center;
@@ -304,4 +326,3 @@ textarea {
     to {opacity:1 ;}
 }
   
-

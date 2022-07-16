@@ -36,18 +36,26 @@
     <div class='bottom'>
         <div class='key'>
             <h3 class='header_text'>Key</h3>
+            <h4>Hover over the different types of dots to learn more about them!</h4>
             <!-- <canvas></canvas> -->
             <div class="popup" onmouseover="loadChild()">child dot
-                <span class="popuptext" id="child">this is child dot</span>
-              </div>
-              <br>
-              <div class="popup" onmouseover="loadAdult()">adult dot
-                  <span class="popuptext" id="adult">this is adult dot</span>
-              </div>
-              <br>
-              <div class="popup" onmouseover="loadSenior()">senior dot
-                  <span class="popuptext" id="senior">this is senior dot</span>
-              </div>          
+                <span class="popuptext" id="child">                
+                    <img src="images/child-dot.png" alt="a child" id='child-dot'> 
+                    small in size, very fast, but not very suspectible to infection
+                </span>
+            </div>
+            <div class="popup" onmouseover="loadAdult()">adult dot
+                <span class="popuptext" id="adult">
+                    <img src="images/adult-dot.png" alt="an adult" id='adult-dot'>
+                    largest in size, medium speed, decent susceptibity to infection
+                </span>
+            </div>
+            <div class="popup" onmouseover="loadSenior()">senior dot
+                <span class="popuptext" id="senior">
+                    <img src="images/senior-dot.png" alt="a senior" id='senior-dot'>
+                    median in size, slow speed, very high susceptiblity to infection
+                </span>
+            </div>
         </div>
         <div class="infected">
             <h3 class='header_text'>Infected Selector</h3>
