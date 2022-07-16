@@ -128,7 +128,7 @@ function simulate() {
   let dots = []
   let ages = ['child', 'adult', 'senior']
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 40; i++) {
     dots.push(new Person(id_counter, ages[i % 3], false));
     dots[i].draw();
     id_counter++;
@@ -143,17 +143,24 @@ function simulate() {
   data.textContent = "Percentage Infected: " + Math.round(1/dots.length * 100) + "%, Number Infected: 1";
 
   let updateCanvas = function() {
-    requestAnimationFrame(updateCanvas);
+    // stop simulating once all of the people are infected
+    if (current_infected.size != dots.length) {
+      requestAnimationFrame(updateCanvas);
+    } else {
+      // dim canvas once and set text on it saying "all infected"
+      // canvas.opacity = 0.5;
+      return
+    }
 
     // functionality for abort button
     if (!keepGoing) {      
+      console.log('i keep returning')
       return;
     }
       
     context.clearRect(0, 0, canvas.width, canvas.height);
 
     let collisionOccurred = false;
-
     // collision detection
     for (let i = 0; i < dots.length; i++) {
       for (let j = 0; j < dots.length; j++) {
@@ -185,6 +192,7 @@ function simulate() {
     dots.forEach((currentPerson) => {
       currentPerson.update();
     });
+
   }
 
   updateCanvas();
