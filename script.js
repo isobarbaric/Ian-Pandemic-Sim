@@ -243,6 +243,10 @@ function timeFormatter(time) {
 function simulate() {
   Person.reset();
 
+  var music = new Audio('sounds/dr-mario-nes-fever.mp3');
+  music.loop=true;
+  music.play();
+
   let start_time = new Date();
   json_button.disabled = true;
 
@@ -300,6 +304,9 @@ function simulate() {
       context.textBaseline = 'middle'; 
       context.textAlign = "center";
       context.fillText("Everyone was infected...simulation complete", canvas.width/2, canvas.height/2);
+      music.pause();
+      var b = new Audio('sounds/short-scream.mp3');
+      b.play();
       return
     }
 
@@ -344,7 +351,13 @@ function simulate() {
             Person.dots[i].stepX *= -1;
             Person.dots[i].stepY *= -1;
             
+            if (infection_spread == true) {
+              var audio = new Audio('sounds/cough1.mp3');
+              audio.play();
+            }
             if (!infection_spread) {
+              var audio = new Audio('sounds/game-blip.mp3');
+              audio.play();
               continue
             }
 
