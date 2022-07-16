@@ -97,17 +97,17 @@ input[type=number] {
 /* images for the key section */
 
 img {
-    height: 1.2em;
+    height: 1em;
     width: auto;
     padding-left: 1em;
 }
 
 #adult-dot {
-    height: 2em;
+    height: 2.5em;
 }
 
 #senior-dot {
-    height: 1.5em;
+    height: 2em;
 }
 
 .infected {

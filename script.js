@@ -28,9 +28,9 @@ function init() {
 // creating a class for the Person.dots  
 class Person {
   static borderWidth = 0;
-  static seniorSpeed = 1;
-  static adultSpeed = Person.seniorSpeed * 1.5;
-  static childSpeed = Person.adultSpeed * 1.5; 
+  static seniorSpeed = 0.7;
+  static adultSpeed = Person.seniorSpeed * 1.2;
+  static childSpeed = Person.adultSpeed * 1.2; 
   static steps = [-1, 1]
   static id_counter = 1
   static dots = []
@@ -48,7 +48,7 @@ class Person {
       this.backgroundColor = '#6cadd8';
       this.speed = Person.childSpeed;
     } else if (age_group === 'adult') {
-      this.radius = 20;
+      this.radius = 25;
       this.backgroundColor = '#67d394';
       this.speed = Person.adultSpeed;
     } else if (age_group === 'senior') {
@@ -215,19 +215,29 @@ function downloadData() {
   download("data.json", json_data);
 }
 
+function lenModifier(a) {
+  if (a.toString().length == 1) a = '0' + a.toString()
+  return a
+}
+
+function timeFormatter(time) {
+  let minutes = parseInt(parseInt(time)/60);
+  console.log(minutes);
+  let remainderSeconds = parseInt(time) % 60;
+  console.log(remainderSeconds);
+  return lenModifier(minutes) + ":" + lenModifier(remainderSeconds);
+}
+
 function simulate() {
   Person.reset();
 
   let start_time = new Date();
   json_button.disabled = true;
 
-  stopwatch.textContent = secondsElapsedTime(start_time, new Date(), false) + " seconds elapsed";
+  stopwatch.textContent = timeFormatter(secondsElapsedTime(start_time, new Date(), false)) + " elapsed";
   let stopwatch_unit = setInterval(function() {
-    let suffix = " second";
-    let time_gone = secondsElapsedTime(start_time, new Date(), true);
-    if (time_gone > 1) suffix += 's';
-    suffix += " elapsed"
-    stopwatch.textContent = secondsElapsedTime(start_time, new Date(), true) + suffix;
+    let time_gone = timeFormatter(secondsElapsedTime(start_time, new Date(), true));
+    stopwatch.textContent = time_gone + " elapsed";
   }, 1000);
 
   infection_table.innerHTML = `<table>
@@ -269,6 +279,7 @@ function simulate() {
       console.log(totalInfected + "/" + totalInfectionOpportunities);
       simulation_button.disabled = false;
       json_button.disabled = false;
+      stopwatch.textContent = secondsElapsedTime(start_time, new Date(), false) + " elapsed";
       clearInterval(stopwatch_unit);
       return
     }
