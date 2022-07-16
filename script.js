@@ -287,7 +287,6 @@ function simulate() {
           continue
         }
         if (Person.intersect(Person.dots[i], Person.dots[j])) {
-          console.log("collision occured");
           collisionOccurred = true;
 
           // don't count situation where both are infected

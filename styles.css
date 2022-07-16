@@ -6,6 +6,14 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-weight: 900;
+}
+
+:root {
+    /* --color-primary: #534171;
+    --color-secondary: #f97e72; */
+    --color-primary: #5F4B8BFF;
+    --color-secondary: #E69A8DFF;
 }
 
 html, body { 
@@ -18,53 +26,52 @@ header {
     width: 100%;
     text-align: center;
     padding: 1em;
-    background-color: #634e87;
-    color: #f97e72;
+    background-color: var(--color-primary);
+    color: #f63623;
 }   
 
 body {
     background-color: '#fff5be';
 }
 
-.flex-container {
+.container {
     display: flex;
     flex-wrap: nowrap;
     height: 65%;
-    border: 0.2em;
-    border-style: groove;
+    border: 0.2em dotted var(--color-primary);
     padding: 0.2em;
 }
 
-.flex-container > div, canvas {
+.container > div, canvas {
     margin: 0.5em;
 } 
 
 .infection-table {
-    border: 4px solid #f97e72; 
+    border: 4px solid var(--color-secondary); 
     /* border-radius: 2em;     */
     width: 30%;
     padding: 1em;
 }
 
 .table {
-    border: 4px solid #f97e72; 
+    border: 4px solid var(--color-secondary); 
     /* border-radius: 2em;     */
     width: 25%;
     padding: 1em;
 }
 
 input[type=range] {
-    accent-color: #f97e72;
+    accent-color: var(--color-secondary);
 }
 
 input[type=number] {
-    background-color: #634e87;
-    color: #f97e72;
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
 }
 
 canvas { 
     /* background-color: '#fff5be'; */
-    border: 4px solid #f97e72; 
+    border: 4px solid var(--color-secondary); 
     /* border-radius: 2em;     */
     display: inline;
     /* margin-top: 1em;
@@ -77,8 +84,8 @@ canvas {
     width: 20em;
     margin: 1em;
     float: left;
-    background-color: #634e87;
-    color: #f97e72;
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
     border-radius: 1em;
     padding: 0.5em;
 }
@@ -87,8 +94,8 @@ canvas {
     width: 20em;
     margin: 1em;
     float: left;
-    background-color: #634e87;
-    color: #f97e72;
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
     border-radius: 1em;
     padding: 0.5em;
 }
@@ -101,7 +108,7 @@ canvas {
     display: flex;
     flex-wrap: nowrap;
     height: 22%;
-    border: 0.2em dotted black;
+    /* border: 0.2em dotted black; */
     padding: 0.2em;
     /* width: 100vh;
     margin: 0.5em;
@@ -117,7 +124,7 @@ canvas {
 .stopwatch, table {
     background-color: beige;
     margin: 1.5em;
-    border-radius: 1.2em;
+    /* border-radius: 1.2em; */
     text-align: center;
     padding: 0.4em;
 }
@@ -126,13 +133,13 @@ canvas {
     background-color: beige;
     margin: 0.8em;
     padding: 0.4em;
-    border-radius: 1.2em;
+    /* border-radius: 1.2em; */
     text-align: center;
 }
 
 .button {
-    background-color: #634e87; 
-    color: #f97e72;
+    background-color: var(--color-primary); 
+    color: var(--color-secondary);
     padding: 1em;
     border: none;
     border-radius: 1em;
@@ -142,8 +149,8 @@ canvas {
 }
 
 .button:hover:enabled {
-    background-color: #f97e72; 
-    color: #634e87;
+    background-color: var(--color-secondary); 
+    color: var(--color-primary);
 }
 
 input:disabled,
@@ -158,9 +165,11 @@ table {
     text-align: center; 
     table-layout: fixed;
     width: 100%;
+    border: 0.2em dotted var(--color-primary);
+    border-radius: 0.3em;
 }
 
-td {
+th, td {
     text-align: center; 
     vertical-align: middle;
     border: 1px solid black;
@@ -205,14 +214,14 @@ textarea {
     width: 100%;
     height: 6%;
     padding: 1em;
-    background-color: #634e87;
-    color: #f97e72;
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
     text-align: center;
 }
 
 .link {
     text-decoration: none;
-    color: #f97e72;
+    color: var(--color-secondary);
 }
 
 .link:hover {
