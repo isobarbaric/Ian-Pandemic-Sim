@@ -35,7 +35,19 @@
     </div>
     <div class='bottom'>
         <div class='key'>
-            
+            <h3 class='header_text'>Key</h3>
+            <!-- <canvas></canvas> -->
+            <div class="popup" onmouseover="loadChild()">child dot
+                <span class="popuptext" id="child">this is child dot</span>
+              </div>
+              <br>
+              <div class="popup" onmouseover="loadAdult()">adult dot
+                  <span class="popuptext" id="adult">this is adult dot</span>
+              </div>
+              <br>
+              <div class="popup" onmouseover="loadSenior()">senior dot
+                  <span class="popuptext" id="senior">this is senior dot</span>
+              </div>          
         </div>
         <div class="infected">
             <h3 class='header_text'>Infected Selector</h3>
@@ -85,11 +97,11 @@
                 <br>
             </div>
         </div>
-        <div>
+        <div class=>
             <input type='submit' value='Start Simulation' id='start-btn' onclick='simulate()' class='button'>
             <input type='submit' value='Collect JSON Data' id='json-btn' onclick='downloadData()' class='button'>
         </div>
-    </div>
+    </div>    
     <script src="script.js"></script>
     <footer>
         <div class='footer'>

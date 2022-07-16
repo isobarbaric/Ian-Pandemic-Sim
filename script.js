@@ -116,8 +116,8 @@ class Person {
   } 
 
   static addPerson(age_group, infected) {
-    Person.dots.push(new Person(Person.id_counter, age_group, infected));
     Person.id_counter++;
+    Person.dots.push(new Person(Person.id_counter, age_group, infected));
   }
 
   static reset() {
@@ -346,4 +346,17 @@ function simulate() {
   }
 
   updateCanvas();
+}
+
+function loadChild() {
+  var popup = document.getElementById("child");
+  popup.classList.toggle("show");
+}
+function loadAdult() {
+  var popup = document.getElementById("adult");
+  popup.classList.toggle("show");
+}
+function loadSenior() {
+  var popup = document.getElementById("senior");
+  popup.classList.toggle("show");
 }
