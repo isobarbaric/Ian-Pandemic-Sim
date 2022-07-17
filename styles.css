@@ -56,6 +56,7 @@ body {
 .container {
     display: flex;
     flex-wrap: nowrap;
+    width: 100%;
     height: 65%;
     /* border: 0.2em dotted var(--border-color); */
     padding: 0.2em;
@@ -64,6 +65,7 @@ body {
 .container > div, #game {
     margin: 0.5em;
     margin-bottom: -0.2em;
+    border-radius: 1.5em;
 } 
 
 .infection-table {
@@ -98,6 +100,7 @@ input[type=number] {
     margin-bottom: 1em; */
     display: block; 
     /* height: 100%; */
+    width: 70%;
 }
 
 .key {

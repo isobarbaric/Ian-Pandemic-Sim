@@ -8,7 +8,7 @@ let json_button = document.querySelector('#json-btn')
 
 function init() {
   canvas = document.querySelector('#game')
-  data = document.querySelector('.info')
+  // data = document.querySelector('.info')
 
   // resize canvas according to screen size
   canvas.width = 0.5*window.innerWidth;
@@ -335,10 +335,10 @@ function simulate() {
   let start_time = new Date();
   json_button.disabled = true;
 
-  stopwatch.textContent = timeFormatter(secondsElapsedTime(start_time, new Date(), false)) + " elapsed";
+  document.title = "Sim - " + timeFormatter(secondsElapsedTime(start_time, new Date(), false));
   let stopwatch_unit = setInterval(function() {
     let time_gone = timeFormatter(secondsElapsedTime(start_time, new Date(), true));
-    stopwatch.textContent = time_gone + " elapsed";
+    document.title = "Sim - " + time_gone;
   }, 1000);
 
   infection_table.innerHTML = `<table>
@@ -365,7 +365,13 @@ function simulate() {
     return;
   }
 
-  data.textContent = "Percentage Infected: " + Math.round(total_infected/Person.dots.length * 100) + "%, Number Infected: 1";
+  // data.textContent = "Percentage Infected: " + Math.round(total_infected/Person.dots.length * 100) + "%, Number Infected: 1";
+
+  // validate
+  function toFixed(num, fixed) {
+    var re = new RegExp('^-?\\d+(?:\.\\d{0,' + (fixed || -1) + '})?');
+    return num.toString().match(re)[0];
+  }
 
   let table_contents = document.querySelector('.content-area');
   let progress_bar = document.getElementById('progress');
@@ -376,7 +382,7 @@ function simulate() {
     } else {
       simulation_button.disabled = false;
       json_button.disabled = false;
-      stopwatch.textContent = secondsElapsedTime(start_time, new Date(), false) + " elapsed";
+      document.title = "Pandemic Simulator";
       clearInterval(stopwatch_unit);
       context.fillStyle = "rgba(255, 255, 230, 0.5)";
       context.fillRect(0, 0, canvas.width, canvas.height);
@@ -385,6 +391,13 @@ function simulate() {
       context.textBaseline = 'middle'; 
       context.textAlign = "center";
       context.fillText("Everyone was infected... Simulation complete!", canvas.width/2, canvas.height/2);
+      let total_infected = Person.totalChildInfected + Person.totalAdultInfected + Person.totalSeniorInfected
+      let total_opportunities = Person.totalChildOpportunities + Person.totalAdultOpportunities + Person.totalSeniorOpportunities    
+      let display_string = "Cumulative Infection Rate: " + toFixed(total_infected/total_opportunities * 100, 2).toString() + "%\n";
+      display_string += "Child Infection Rate: " + toFixed(Person.totalChildInfected/Person.totalChildOpportunities * 100, 2).toString() + "%\n";
+      display_string += "Adult Infection Rate: " + toFixed(Person.totalAdultInfected/Person.totalAdultOpportunities * 100, 2).toString() + "%\n";
+      display_string += "Senior Infection Rate: " + toFixed(Person.totalSeniorInfected/Person.totalSeniorOpportunities * 100, 2).toString() + "%\n";
+      alert(display_string);
       music.pause();
       let b = new Audio('sounds/short-scream.mp3');
       b.play();
@@ -473,7 +486,7 @@ function simulate() {
 
     if (collisionOccurred) {
       // change and personalize to each type of person
-      data.textContent = "Percentage Infected: " + Math.round((Person.current_infected.size)/Person.dots.length * 100) + "%, Number Infected: " + Person.current_infected.size;
+      // data.textContent = "Percentage Infected: " + Math.round((Person.current_infected.size)/Person.dots.length * 100) + "%, Number Infected: " + Person.current_infected.size;
     }
 
     Person.dots.forEach((currentPerson) => {
@@ -499,4 +512,3 @@ function loadSenior() {
   let popup = document.getElementById("senior");
   popup.classList.toggle("show");
 }
-
