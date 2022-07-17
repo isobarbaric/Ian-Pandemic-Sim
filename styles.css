@@ -101,10 +101,11 @@ input[type=number] {
 
 .key {
     width: 20em;
+    height: 11em;
     margin: 1em;
     margin-top: 0.2em;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 3%;
+    margin-right: 1.1%;
     float: left;
     background-color: var(--color-primary);
     color: var(--color-secondary);
@@ -131,6 +132,7 @@ img {
 
 .infected {
     width: 20em;
+    height: 11em;
     margin: 1em;
     margin-top: 0.2em;
     margin-left: auto; 
@@ -144,6 +146,7 @@ img {
 
 .uninfected {
     width: 20em;
+    height: 11em;
     margin: 1em;
     margin-top: 0.2em;
     /* margin-left: auto; */
