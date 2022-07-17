@@ -1,5 +1,5 @@
 
-// global variables
+// global letiables
 let canvas, data, content;
 let stopwatch = document.querySelector('.stopwatch')
 let infection_table = document.querySelector('.outline')
@@ -33,7 +33,7 @@ function init() {
 
   context.font = "1em Nunito Sans, sans-serif";
   context.fillText("Select criteria from the two selectors below to choose input conditions.", canvas.width/2, canvas.height/2);
-  context.fillText("To better understand the simulation, you can visit the section labeled 'Key' details each type of dot.", canvas.width/2, canvas.height/2+20);
+  context.fillText("To better understand the simulation, you can visit the section labeled 'Key', which details each type of dot.", canvas.width/2, canvas.height/2+20);
   context.fillText("Once you have chosen the desired inputs, press the 'Start Simulation' button to start the simulation.", canvas.width/2, canvas.height/2 + 40);
 }
 
@@ -48,7 +48,23 @@ class Person {
   static dots = []
   static ages = ['child', 'adult', 'senior']
   static current_infected = new Set();
-  
+
+  static infected_child = 0;
+  static infected_adult = 0;
+  static infected_senior = 0;
+  static uninfected_child = 0;
+  static uninfected_adult = 0;
+  static uninfected_senior = 0;
+
+  static totalChildInfected = 0;
+  static totalChildOpportunities = 0;
+
+  static totalAdultInfected = 0;
+  static totalAdultOpportunities = 0;
+
+  static totalSeniorInfected = 0;
+  static totalSeniorOpportunities = 0;
+    
   constructor(id_number, age_group, infected) {
     this.id_number = id_number;
     this.age_group = age_group;
@@ -75,11 +91,9 @@ class Person {
 
     this.borderColor = this.backgroundColor;
 
-    // add validation for spawn area, to make sure don't spawn out of the screen 
     this.x = Person.generateRandomInt(this.radius+1, canvas.width-this.radius-1);
     this.y = Person.generateRandomInt(this.radius+1, canvas.height-this.radius-1);
 
-    // set step size of Person object, different speed according to type of person
     this.stepX = Person.steps[Person.generateRandomInt(0, 2)] * this.speed;
     this.stepY = Person.steps[Person.generateRandomInt(0, 2)] * this.speed;
   }
@@ -90,7 +104,6 @@ class Person {
     context.fillStyle = this.backgroundColor;
     context.fill();
     context.lineWidth = Person.borderWidth;
-    // can change the border color as per dot maybe
     context.strokeStyle = this.borderColor;
     context.stroke();
     context.closePath();
@@ -99,7 +112,6 @@ class Person {
   update() {
     this.draw();
 
-    // collision detection
     if (this.x + this.radius > canvas.width) {
       this.stepX *= -1;
     }
@@ -136,14 +148,24 @@ class Person {
     Person.id_counter = 1
     Person.dots = []
     Person.current_infected = new Set();  
+    Person.infected_child = 0;
+    Person.infected_adult = 0;
+    Person.infected_senior = 0;
+    Person.uninfected_child = 0;
+    Person.uninfected_adult = 0;
+    Person.uninfected_senior = 0;  
+    Person.totalChildInfected = 0;
+    Person.totalChildOpportunities = 0;
+    Person.totalAdultInfected = 0;
+    Person.totalAdultOpportunities = 0;
+    Person.totalSeniorInfected = 0;
+    Person.totalSeniorOpportunities = 0;  
   }
 
 }
 
-// to be called when given invalid input, 
-
 function secondsElapsedTime(start_time, end_time, rounded) {
-  var timeDiff = end_time - start_time; 
+  let timeDiff = end_time - start_time; 
   timeDiff /= 1000;
   if (rounded) return Math.round(timeDiff);
   return timeDiff;
@@ -163,17 +185,20 @@ function validateInput(sender) {
 function addInfected() {
   let totalInfected = 0;
   // adding children
-  for (let i = 0; i < parseInt(document.getElementById('child_in').value); i++, totalInfected++) {
+  Person.infected_child = parseInt(document.getElementById('child_in').value);
+  for (let i = 0; i < Person.infected_child; i++, totalInfected++) {
     Person.addPerson("child", true);
     Person.current_infected.add(Person.dots.at(-1).id_number);
   }
   // adding adults
-  for (let i = 0; i < parseInt(document.getElementById('adult_in').value); i++, totalInfected++) {
+  Person.infected_adult = parseInt(document.getElementById('adult_in').value);
+  for (let i = 0; i < Person.infected_adult; i++, totalInfected++) {
     Person.addPerson("adult", true);
     Person.current_infected.add(Person.dots.at(-1).id_number);
   }
   // adding seniors
-  for (let i = 0; i < parseInt(document.getElementById('senior_in').value); i++, totalInfected++) {
+  Person.infected_senior = parseInt(document.getElementById('senior_in').value);
+  for (let i = 0; i < Person.infected_senior; i++, totalInfected++) {
     Person.addPerson("senior", true);
     Person.current_infected.add(Person.dots.at(-1).id_number);
   }
@@ -183,24 +208,27 @@ function addInfected() {
 function addUninfected() {
   let totalUninfected = 0;
   // adding children
-  for (let i = 0; i < parseInt(document.getElementById('child_un').value); i++, totalUninfected++)
+  Person.uninfected_child = parseInt(document.getElementById('child_un').value);
+  for (let i = 0; i < Person.uninfected_child; i++, totalUninfected++)
     Person.addPerson("child", false);
   // adding adults
-  for (let i = 0; i < parseInt(document.getElementById('adult_un').value); i++, totalUninfected++)
+  Person.uninfected_adult = parseInt(document.getElementById('adult_un').value)
+  for (let i = 0; i < Person.uninfected_adult; i++, totalUninfected++)
     Person.addPerson("adult", false);
   // adding seniors
-  for (let i = 0; i < parseInt(document.getElementById('senior_un').value); i++, totalUninfected++)
+  Person.uninfected_senior = parseInt(document.getElementById('senior_un').value)
+  for (let i = 0; i < Person.uninfected_senior; i++, totalUninfected++)
     Person.addPerson("senior", false);  
   return totalUninfected;
 }
 
 // takem from StackOverflow
 function tableToJson(table) { 
-  var data = [];
-  for (var i=1; i<table.rows.length; i++) { 
-      var tableRow = table.rows[i]; 
-      var rowData = []; 
-      for (var j=0; j<tableRow.cells.length; j++) { 
+  let data = [];
+  for (let i=1; i<table.rows.length; i++) { 
+      let tableRow = table.rows[i]; 
+      let rowData = []; 
+      for (let j=0; j<tableRow.cells.length; j++) { 
           rowData.push(tableRow.cells[j].innerHTML);; 
       } 
       data.push(rowData); 
@@ -210,7 +238,7 @@ function tableToJson(table) {
 
 // taken from Stack Overflow
 function download(filename, text) {
-  var element = document.createElement('a');
+  let element = document.createElement('a');
   element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
   element.setAttribute('download', filename);
   element.style.display = 'none';
@@ -219,12 +247,49 @@ function download(filename, text) {
   document.body.removeChild(element);
 }
 
+// convert json to array
+function JSONToArray(json_string) {
+  let current_obj = JSON.parse(json_string);
+  let converted = [];
+  for(let i in current_obj)
+    converted.push(current_obj[i]);
+    
+  return converted;
+}
+
 function downloadData() {
-  let data_table = document.getElementsByTagName('table')[0]
-  let json_data = JSON.stringify(Object.assign({}, tableToJson(data_table)));
+  let data_table = document.getElementsByTagName('table')[0];
+  let json_array = JSON.stringify(tableToJson(data_table));
+  let json_data = {};
+  json_array = JSONToArray(json_array);
+  json_data['infection-log'] = {};
+  for (let i = 0; i < json_array.length; i++) {
+    json_data['infection-log'][i] = {};
+    json_data['infection-log'][i]['id'] = json_array[i][0]
+    json_data['infection-log'][i]['type'] = json_array[i][1]
+    json_data['infection-log'][i]['time'] = json_array[i][2]
+  }
+  json_data['input'] = {};
+  json_data['input']['infected'] = {
+    "child": Person.infected_child,
+    "adult": Person.infected_adult,
+    "senior": Person.infected_senior
+  }
+  json_data['input']['uninfected'] = {
+    "child": Person.uninfected_child,
+    "adult": Person.uninfected_adult,
+    "senior": Person.uninfected_senior
+  }
+  json_data['infection-rate'] = {}
+  let total_infected = Person.totalChildInfected + Person.totalAdultInfected + Person.totalSeniorInfected
+  let total_opportunities = Person.totalChildOpportunities + Person.totalAdultOpportunities + Person.totalSeniorOpportunities
+  console.assert(total_infected <= total_opportunities);
+  json_data['infection-rate']['cumulative'] = total_infected/total_opportunities * 100
+  json_data['infection-rate']['child'] = Person.totalChildInfected/Person.totalChildOpportunities * 100
+  json_data['infection-rate']['adult'] = Person.totalAdultInfected/Person.totalAdultOpportunities * 100
+  json_data['infection-rate']['senior'] = Person.totalSeniorInfected/Person.totalSeniorOpportunities * 100
   console.log(json_data);
-  // e.preventDefault();
-  download("data.json", json_data);
+  download("data.json", JSON.stringify(json_data, null, 4));
 }
 
 function lenModifier(a) {
@@ -234,16 +299,36 @@ function lenModifier(a) {
 
 function timeFormatter(time) {
   let minutes = parseInt(parseInt(time)/60);
-  console.log(minutes);
   let remainderSeconds = parseInt(time) % 60;
-  console.log(remainderSeconds);
   return lenModifier(minutes) + ":" + lenModifier(remainderSeconds);
+}
+
+function getChildProbability() {
+  let quan = Math.random();
+  if (quan <= 0.33) 
+    return true;  
+  else if (quan <= 0.66) 
+    return false; 
+  return false;
+}
+
+function getAdultProbability() {
+  return Math.random() <= 0.5;
+}
+
+function getSeniorProbability() {
+  let quan = Math.random();
+  if (quan <= 0.33) 
+    return true;  
+  else if (quan <= 0.66) 
+    return true; 
+  return false;
 }
 
 function simulate() {
   Person.reset();
 
-  var music = new Audio('sounds/dr-mario-nes-fever.mp3');
+  let music = new Audio('sounds/dr-mario-nes-fever.mp3');
   music.loop=true;
   music.play();
 
@@ -271,28 +356,24 @@ function simulate() {
   simulation_button.disabled = true;
 
   addUninfected();
-  let totalInfected = addInfected();
+  let total_infected = addInfected();
 
-  if (totalInfected == 0) {
+  // console.log(Person.child_infected.size, Person.adult_infected.size, Person.senior_infected.size);
+
+  if (total_infected == 0) {
     alert("Please select a non-zero number of infected people.");
     return;
   }
 
-  data.textContent = "Percentage Infected: " + Math.round(totalInfected/Person.dots.length * 100) + "%, Number Infected: 1";
-
-  let totalInfectionOpportunities = 0;
+  data.textContent = "Percentage Infected: " + Math.round(total_infected/Person.dots.length * 100) + "%, Number Infected: 1";
 
   let table_contents = document.querySelector('.content-area');
   let progress_bar = document.getElementById('progress');
 
   let updateCanvas = function() {
-    // stop simulating once all of the people are infected
     if (Person.current_infected.size != Person.dots.length) {
       requestAnimationFrame(updateCanvas);
     } else {
-      // dim canvas once and set text on it saying "all infected"
-      // canvas.opacity = 0.5;
-      console.log(totalInfected + "/" + totalInfectionOpportunities);
       simulation_button.disabled = false;
       json_button.disabled = false;
       stopwatch.textContent = secondsElapsedTime(start_time, new Date(), false) + " elapsed";
@@ -305,15 +386,15 @@ function simulate() {
       context.textAlign = "center";
       context.fillText("Everyone was infected...simulation complete", canvas.width/2, canvas.height/2);
       music.pause();
-      var b = new Audio('sounds/short-scream.mp3');
+      let b = new Audio('sounds/short-scream.mp3');
       b.play();
       return
     }
 
     context.clearRect(0, 0, canvas.width, canvas.height);
 
-    let collisionOccurred = false;
     // collision detection
+    let collisionOccurred = false;
     for (let i = 0; i < Person.dots.length; i++) {
       for (let j = 0; j < Person.dots.length; j++) {
         if (i == j) continue;
@@ -337,33 +418,46 @@ function simulate() {
             
             if (person_type == 'child') {
               // child has 1/3 probability of being infected
-              if (Math.round((Math.random()*3)+1) == 3) infection_spread = true
+              if (getChildProbability()) infection_spread = true
             } else if (person_type === 'adult') { 
               // adult has 1/2 probability of being infected
-              if (Math.round((Math.random()*2)+1) == 1) infection_spread = true
+              if (getAdultProbability()) infection_spread = true
             } else if (person_type === 'senior') { 
               // senior has 2/3 probability of being infected
-              if (Math.round((Math.random()*3)+1) >= 2) infection_spread = true
+              if (getSeniorProbability()) infection_spread = true
             } 
 
-            totalInfectionOpportunities++;
-        
+            Person.totalInfectionOpportunities++;
+            if (person_type == 'child') {
+              Person.totalChildOpportunities++;
+            } else if (person_type == 'adult') {
+              Person.totalAdultOpportunities++;
+            } else {
+              Person.totalSeniorOpportunities++;
+            }
+
             Person.dots[i].stepX *= -1;
             Person.dots[i].stepY *= -1;
             
             if (infection_spread == true) {
-              var audio = new Audio('sounds/cough1.mp3');
+              let audio = new Audio('sounds/cough1.mp3');
               audio.play();
             }
             if (!infection_spread) {
-              var audio = new Audio('sounds/game-blip.mp3');
+              let audio = new Audio('sounds/game-blip.mp3');
               audio.play();
               continue
             }
 
             table_contents.innerHTML += "\n<tr><td>" + other_ind + "</td><td>" + Person.dots[other_ind].age_group + "</td><td>" + secondsElapsedTime(start_time, new Date(), false) + "</td></tr>";
 
-            totalInfected++;
+            if (person_type == 'child') {
+              Person.totalChildInfected++;
+            } else if (person_type == 'adult') {
+              Person.totalAdultInfected++;
+            } else {
+              Person.totalSeniorInfected++;
+            }
 
             // progress_bar.innerHTML = Math.round((current_infected.size)/Person.dots.length * 100) + "%";
 
@@ -392,17 +486,17 @@ function simulate() {
 }
 
 function loadChild() {
-  var popup = document.getElementById("child");
+  let popup = document.getElementById("child");
   popup.classList.toggle("show");
 }
 
 function loadAdult() {
-  var popup = document.getElementById("adult");
+  let popup = document.getElementById("adult");
   popup.classList.toggle("show");
 }
 
 function loadSenior() {
-  var popup = document.getElementById("senior");
+  let popup = document.getElementById("senior");
   popup.classList.toggle("show");
 }
 
