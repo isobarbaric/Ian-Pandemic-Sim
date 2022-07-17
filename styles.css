@@ -202,15 +202,6 @@ img {
     text-align: center;
 }
 
-.outline {
-    background-color: var(--color-primary);
-    color:  var(--color-secondary);
-    margin: 0.8em;
-    padding: 0.4em;
-    border-radius: 1.2em;
-    text-align: center;
-}
-
 .button {
     background-color: var(--color-primary); 
     color: var(--color-secondary);
@@ -231,6 +222,7 @@ img {
 .button:hover:enabled {
     background-color: var(--color-secondary); 
     color: var(--color-primary);
+    cursor: pointer;
 }
 
 input:disabled,
@@ -239,14 +231,22 @@ input[disabled]{
 }
 
 table {
-    margin: 1em;
     margin-left: auto;
     margin-right: auto;
     text-align: center; 
     table-layout: fixed;
     width: 100%;
     /* border: 0.2em dotted var(--border-color);; */
-    border-radius: 0.3em;
+    /* border-radius: 0.15em; */
+}
+
+.outline {
+    background-color: var(--color-primary);
+    color:  var(--color-secondary);
+    margin: 0.8em;
+    padding: 0.4em;
+    border-radius: 1.2em;
+    text-align: center;
 }
 
 th, td {
@@ -288,6 +288,10 @@ textarea {
     background-color: var(--color-primary);
     color: var(--color-secondary);
     text-align: center;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+
 }
 
 .link {
@@ -359,20 +363,4 @@ textarea {
 @keyframes fadeIn {
     from {opacity: 0;}
     to {opacity:1 ;}
-}
-  
-.built {
-    text-align: center;
-    margin-top: 5%;
-}
-.about {
-    text-align: center;
-}
-
-.cool {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 30%;
-    height: auto;
 }

@@ -33,7 +33,7 @@ function init() {
 
   context.font = "1em Nunito Sans, sans-serif";
   context.fillText("Select criteria from the two selectors below to choose input conditions.", canvas.width/2, canvas.height/2);
-  context.fillText("To better understand the simulation, you can visit the section labeled 'Key', which details each type of dot.", canvas.width/2, canvas.height/2+20);
+  context.fillText("You can visit the section labeled 'Key', which details each type of dot, to learn about the simulation!", canvas.width/2, canvas.height/2+20);
   context.fillText("Once you have chosen the desired inputs, press the 'Start Simulation' button to start the simulation.", canvas.width/2, canvas.height/2 + 40);
 }
 
