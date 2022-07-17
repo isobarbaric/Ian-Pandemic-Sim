@@ -378,10 +378,10 @@ function simulate() {
       json_button.disabled = false;
       stopwatch.textContent = secondsElapsedTime(start_time, new Date(), false) + " elapsed";
       clearInterval(stopwatch_unit);
-      context.fillStyle = "rgba(255, 255, 200, 0.8)";
+      context.fillStyle = "rgba(255, 255, 230, 0.5)";
       context.fillRect(0, 0, canvas.width, canvas.height);
       context.font = "2em Nunito Sans, sans-serif";
-      context.fillStyle = 'black'
+      context.fillStyle = 'rgb(43, 174, 102)'
       context.textBaseline = 'middle'; 
       context.textAlign = "center";
       context.fillText("Everyone was infected... Simulation complete!", canvas.width/2, canvas.height/2);
