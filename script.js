@@ -303,7 +303,7 @@ function simulate() {
       context.fillStyle = 'black'
       context.textBaseline = 'middle'; 
       context.textAlign = "center";
-      context.fillText("Everyone was infected...simulation complete", canvas.width/2, canvas.height/2);
+      context.fillText("Everyone was infected... Simulation complete!", canvas.width/2, canvas.height/2);
       music.pause();
       var b = new Audio('sounds/short-scream.mp3');
       b.play();
