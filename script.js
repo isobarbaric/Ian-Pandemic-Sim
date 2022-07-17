@@ -24,7 +24,7 @@ function init() {
 
   json_button.disabled = true;
 
-  context.fillStyle = 'black'
+  context.fillStyle = '#2BAE66FF';
   context.textBaseline = 'middle'; 
   context.textAlign = "center";
 

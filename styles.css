@@ -12,7 +12,8 @@
 :root {
     --color-primary: #2BAE66FF;
     --color-secondary: #FCF6F5FF;
-    --border-color: black;
+    /* --border-color: black; */
+    --border-color: var(--color-primary);
 }
 
 html, body { 
